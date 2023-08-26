@@ -3,12 +3,14 @@ import { ImageBackground, StyleSheet, Text, View } from "react-native";
 import bg from "./assets/bg.jpeg";
 import { COLORS } from "./src/constants/themes";
 import { Circle } from "./src/components/Circle";
+import { Cross } from "./src/components/Cross";
 
 export default function App() {
   return (
     <View style={styles.container}>
       <ImageBackground source={bg} style={styles.bg}>
         <Circle />
+        <Cross />
       </ImageBackground>
       <StatusBar style="auto" />
     </View>
