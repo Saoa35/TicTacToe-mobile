@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     height: 100,
     alignItems: "center",
     justifyContent: "center",
-    position: "relative",
+    position: "absolute",
   },
   crossLineOne: {
     width: 15,

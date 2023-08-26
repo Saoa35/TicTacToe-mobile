@@ -4,13 +4,22 @@ import bg from "./assets/bg.jpeg";
 import { COLORS } from "./src/constants/themes";
 import { Circle } from "./src/components/Circle";
 import { Cross } from "./src/components/Cross";
+import { useState } from "react";
 
 export default function App() {
+  const [playgraund, setPlayground] = useState([
+    ["", "", ""],
+    ["", "", ""],
+    ["", "", ""],
+  ]);
+
   return (
     <View style={styles.container}>
       <ImageBackground source={bg} style={styles.bg}>
-        <Circle />
-        <Cross />
+        <View style={styles.playgraund}>
+          <Circle />
+          <Cross />
+        </View>
       </ImageBackground>
       <StatusBar style="auto" />
     </View>
@@ -29,6 +38,13 @@ const styles = StyleSheet.create({
     height: "100%",
     alignItems: "center",
     justifyContent: "center",
+    resizeMode: "contain",
     paddingTop: 20,
+  },
+  playgraund: {
+    borderWidth: 1,
+    borderColor: COLORS.items,
+    width: "93%",
+    aspectRatio: 1,
   },
 });
