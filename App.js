@@ -8,17 +8,24 @@ import { useState } from "react";
 
 export default function App() {
   const [playgraund, setPlayground] = useState([
-    ["", "", ""],
-    ["", "", ""],
-    ["", "", ""],
+    ["0", "", "x"],
+    ["", "x", "x"],
+    ["0", "", "0"],
   ]);
 
   return (
     <View style={styles.container}>
       <ImageBackground source={bg} style={styles.bg}>
         <View style={styles.playgraund}>
-          <Circle />
-          <Cross />
+          {playgraund.map((row, i) => (
+            <View key={i} style={styles.row}>
+              {row.map((cell, i) => (
+                <View key={i} style={styles.cell}>
+                  {cell === "0" ? <Circle /> : cell === "x" ? <Cross /> : ""}
+                </View>
+              ))}
+            </View>
+          ))}
         </View>
       </ImageBackground>
       <StatusBar style="auto" />
@@ -46,5 +53,16 @@ const styles = StyleSheet.create({
     borderColor: COLORS.items,
     width: "93%",
     aspectRatio: 1,
+  },
+  row: {
+    flex: 1,
+    flexDirection: "row",
+  },
+  cell: {
+    flex: 1,
+    borderColor: "green",
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

@@ -15,6 +15,6 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     // alignItems: "center",
     // justifyContent: "center",
-    position: "absolute",
+    // position: "absolute",
   },
 });
