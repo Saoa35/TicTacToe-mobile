@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-import {
-  Alert,
-  // ImageBackground,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-// import bg from "../../assets/bg";
+import { Alert, Pressable, StyleSheet, View } from "react-native";
 import { Circle } from "../components/Circle";
 import { Cross } from "../components/Cross";
 import { COLORS } from "../constants/themes";
@@ -18,10 +10,8 @@ const emptyField = [
   ["", "", ""],
 ];
 
-function PlaygroundScreen() {
+function PlaygroundScreen({ currentTurn, setCurrentTurn }) {
   const [playground, setPlayground] = useState(emptyField);
-
-  const [currentTurn, setCurrentTurn] = useState("x");
 
   const handlePress = (rowId, cellId) => {
     const updatedPlayground = [...playground];
@@ -33,35 +23,26 @@ function PlaygroundScreen() {
 
     setCurrentTurn(currentTurn === "x" ? "0" : "x");
 
-    winnerCheck();
+    const winner = getWinner();
+
+    if (winner) {
+      gameWon(winner);
+    } else {
+      tie();
+    }
   };
 
-  const gameWon = (player) => {
-    Alert.alert(`Congradulation`, `Player ${player} won !!!`, [
-      { text: "Restart", onPress: resetGame },
-    ]);
-  };
-
-  const resetGame = () => {
-    setPlayground([
-      ["", "", ""],
-      ["", "", ""],
-      ["", "", ""],
-    ]);
-    setCurrentTurn("x");
-  };
-
-  const winnerCheck = () => {
+  const getWinner = () => {
     for (let i = 0; i < playground.length; i++) {
       const isXRowWin = playground[i].every((cell) => cell === "x");
       const isORowWin = playground[i].every((cell) => cell === "0");
 
       if (isXRowWin) {
-        gameWon("X");
+        return "X";
       }
 
       if (isORowWin) {
-        gameWon("O");
+        return "O";
       }
     }
 
@@ -79,11 +60,11 @@ function PlaygroundScreen() {
       }
 
       if (isXColumnWin) {
-        gameWon("X");
+        return "X";
       }
 
       if (isOColumnWin) {
-        gameWon("O");
+        return "O";
       }
     }
 
@@ -110,25 +91,39 @@ function PlaygroundScreen() {
       }
     }
 
-    if (isOLeftDiagonalWin) {
-      gameWon("O");
+    if (isOLeftDiagonalWin || isORightDiagonalWin) {
+      return "O";
     }
 
-    if (isXLeftDiagonalWin) {
-      gameWon("X");
-    }
-
-    if (isORightDiagonalWin) {
-      gameWon("O");
-    }
-
-    if (isXRightDiagonalWin) {
-      gameWon("X");
+    if (isXLeftDiagonalWin || isXRightDiagonalWin) {
+      return "X";
     }
   };
 
+  const tie = () => {
+    if (!playground.some((row) => row.some((cell) => cell === ""))) {
+      Alert.alert(`Tie`, `It is a Tie !`, [
+        { text: "Restart", onPress: resetGame },
+      ]);
+    }
+  };
+
+  const gameWon = (player) => {
+    Alert.alert(`Congradulation`, `Player ${player} won !!!`, [
+      { text: "Restart", onPress: resetGame },
+    ]);
+  };
+
+  const resetGame = () => {
+    setPlayground([
+      ["", "", ""],
+      ["", "", ""],
+      ["", "", ""],
+    ]);
+    setCurrentTurn("x");
+  };
+
   return (
-    // <ImageBackground source={bg} style={styles.bg}>
     <View style={styles.playground}>
       {playground.map((row, rowId) => (
         <View key={rowId} style={styles.row}>
@@ -144,7 +139,6 @@ function PlaygroundScreen() {
         </View>
       ))}
     </View>
-    // </ImageBackground>
   );
 }
 
