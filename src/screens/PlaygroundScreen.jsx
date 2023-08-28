@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";
-import { Cell } from "../components/Cell";
+import { Row } from "../components/Row";
 
 const emptyField = [
   ["", "", ""],
@@ -124,16 +124,7 @@ function PlaygroundScreen({ currentTurn, setCurrentTurn }) {
   return (
     <View style={styles.playground}>
       {playground.map((row, rowId) => (
-        <View key={rowId} style={styles.row}>
-          {row.map((cell, cellId) => (
-            <Cell
-              cell={cell}
-              cellId={cellId}
-              handlePress={handlePress}
-              rowId={rowId}
-            />
-          ))}
-        </View>
+        <Row key={rowId} row={row} rowId={rowId} handlePress={handlePress} />
       ))}
     </View>
   );
@@ -145,9 +136,5 @@ const styles = StyleSheet.create({
   playground: {
     width: "93%",
     aspectRatio: 1,
-  },
-  row: {
-    flex: 1,
-    flexDirection: "row",
   },
 });

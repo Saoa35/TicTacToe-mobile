@@ -6,24 +6,13 @@ import { COLORS } from "../constants/themes";
 
 export const Cell = ({ cell, cellId, rowId, handlePress }) => {
   return (
-    <Pressable
-      onPress={() => handlePress(rowId, cellId)}
-      key={cellId}
-      style={styles.cell}
-    >
+    <Pressable onPress={() => handlePress(rowId, cellId)} style={styles.cell}>
       {cell === "0" ? <Circle /> : cell === "x" ? <Cross /> : ""}
     </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
-  circle: {
-    width: 100,
-    height: 100,
-    borderWidth: 15,
-    borderColor: COLORS.items,
-    borderRadius: 999,
-  },
   cell: {
     flex: 1,
     borderColor: COLORS.cells,
