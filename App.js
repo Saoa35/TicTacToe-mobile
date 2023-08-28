@@ -6,6 +6,7 @@ import PlaygroundScreen from "./src/screens/PlaygroundScreen";
 
 export default function App() {
   const [currentTurn, setCurrentTurn] = useState("x");
+  const [gameMode, setGameMode] = useState("BOT_MEDIUM");
 
   return (
     <View style={styles.container}>
@@ -13,7 +14,44 @@ export default function App() {
       <PlaygroundScreen
         currentTurn={currentTurn}
         setCurrentTurn={setCurrentTurn}
+        gameMode={gameMode}
+        setGameMode={setGameMode}
       />
+      <View style={styles.buttons}>
+        <Text
+          style={[
+            styles.button,
+            {
+              backgroundColor:
+                gameMode === "LOCAL" ? COLORS.cells : COLORS.gray,
+            },
+          ]}
+        >
+          Local
+        </Text>
+        <Text
+          style={[
+            styles.button,
+            {
+              backgroundColor:
+                gameMode === "BOT_EASY" ? COLORS.cells : COLORS.gray,
+            },
+          ]}
+        >
+          Easy Bot
+        </Text>
+        <Text
+          style={[
+            styles.button,
+            {
+              backgroundColor:
+                gameMode === "BOT_MEDIUM" ? COLORS.cells : COLORS.gray,
+            },
+          ]}
+        >
+          Medium Bot
+        </Text>
+      </View>
       <StatusBar style="auto" />
     </View>
   );
@@ -32,5 +70,17 @@ const styles = StyleSheet.create({
     color: COLORS.items,
     position: "absolute",
     top: "8%",
+  },
+  buttons: {
+    position: "absolute",
+    bottom: "10%",
+    flexDirection: "row",
+  },
+  button: {
+    marginHorizontal: "5%",
+    padding: "2%",
+    borderRadius: 10,
+    color: COLORS.items,
+    fontSize: 20,
   },
 });

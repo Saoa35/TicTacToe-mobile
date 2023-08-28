@@ -8,9 +8,13 @@ const emptyField = [
   ["", "", ""],
 ];
 
-function PlaygroundScreen({ currentTurn, setCurrentTurn }) {
+function PlaygroundScreen({
+  currentTurn,
+  setCurrentTurn,
+  gameMode,
+  setGameMode,
+}) {
   const [playground, setPlayground] = useState(emptyField);
-  const [gameMode, setGameMode] = useState("BOT_MEDIUM");
 
   const copyPlayground = (original) => {
     const copy = JSON.parse(JSON.stringify(original));
@@ -34,6 +38,11 @@ function PlaygroundScreen({ currentTurn, setCurrentTurn }) {
   }, [playground]);
 
   const handlePress = (rowId, cellId) => {
+    if (playground[rowId][cellId] !== "") {
+      Alert.alert("Position already occupied");
+      return;
+    }
+
     const updatedPlayground = [...playground];
 
     if (updatedPlayground[rowId][cellId] === "") {
