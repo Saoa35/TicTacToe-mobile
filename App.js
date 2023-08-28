@@ -9,7 +9,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text>Current Turn: {currentTurn.toUpperCase()}</Text>
+      <Text style={styles.turn}>Current Turn: {currentTurn.toUpperCase()}</Text>
       <PlaygroundScreen
         currentTurn={currentTurn}
         setCurrentTurn={setCurrentTurn}
@@ -25,5 +25,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: COLORS.background,
+    position: "relative",
+  },
+  turn: {
+    fontSize: 24,
+    color: COLORS.items,
+    position: "absolute",
+    top: "8%",
   },
 });

@@ -145,14 +145,6 @@ function PlaygroundScreen({ currentTurn, setCurrentTurn }) {
 export default PlaygroundScreen;
 
 const styles = StyleSheet.create({
-  bg: {
-    width: "100%",
-    height: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-    resizeMode: "contain",
-    paddingTop: 20,
-  },
   playground: {
     width: "93%",
     aspectRatio: 1,
