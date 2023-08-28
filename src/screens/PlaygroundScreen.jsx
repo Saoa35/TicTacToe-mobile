@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";
 import { Row } from "../components/Row";
 import { emptyField } from "../constants/constants";
@@ -6,6 +6,12 @@ import { getWinner } from "../constants/functions";
 
 function PlaygroundScreen({ currentTurn, setCurrentTurn }) {
   const [playground, setPlayground] = useState(emptyField);
+
+  useEffect(() => {
+    if (currentTurn === "0") {
+      bot();
+    }
+  }, [currentTurn]);
 
   const handlePress = (rowId, cellId) => {
     const updatedPlayground = [...playground];
@@ -47,6 +53,24 @@ function PlaygroundScreen({ currentTurn, setCurrentTurn }) {
       ["", "", ""],
     ]);
     setCurrentTurn("x");
+  };
+
+  const bot = () => {
+    const possiblePositions = [];
+    playground.forEach((row, rowIndex) => {
+      row.forEach((cell, colIndex) => {
+        if (cell === "") {
+          possiblePositions.push({ row: rowIndex, col: colIndex });
+        }
+      });
+    });
+
+    const chosenPosition =
+      possiblePositions[Math.floor(Math.random() * possiblePositions.length)];
+
+    if (possiblePositions.length) {
+      handlePress(chosenPosition.row, chosenPosition.col);
+    }
   };
 
   return (
