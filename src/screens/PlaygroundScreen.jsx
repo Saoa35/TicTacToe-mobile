@@ -1,17 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";
 import { Row } from "../components/Row";
-import { emptyField } from "../constants/constants";
-import { getWinner } from "../constants/functions";
+
+const emptyField = [
+  ["", "", ""],
+  ["", "", ""],
+  ["", "", ""],
+];
 
 function PlaygroundScreen({ currentTurn, setCurrentTurn }) {
   const [playground, setPlayground] = useState(emptyField);
+  const [gameMode, setGameMode] = useState("BOT_MEDIUM");
+
+  const copyPlayground = (original) => {
+    const copy = JSON.parse(JSON.stringify(original));
+    return copy;
+  };
 
   useEffect(() => {
     if (currentTurn === "0") {
       bot();
     }
   }, [currentTurn]);
+
+  useEffect(() => {
+    const winner = getWinner(playground);
+
+    if (winner) {
+      gameWon(winner);
+    } else {
+      tie();
+    }
+  }, [playground]);
 
   const handlePress = (rowId, cellId) => {
     const updatedPlayground = [...playground];
@@ -22,13 +42,73 @@ function PlaygroundScreen({ currentTurn, setCurrentTurn }) {
     }
 
     setCurrentTurn(currentTurn === "x" ? "0" : "x");
+  };
 
-    const winner = getWinner(playground);
+  const getWinner = (playgroundWinner) => {
+    for (let i = 0; i < 3; i++) {
+      const isXRowWin = playgroundWinner[i].every((cell) => cell === "x");
+      const isORowWin = playgroundWinner[i].every((cell) => cell === "0");
 
-    if (winner) {
-      gameWon(winner);
-    } else {
-      tie();
+      if (isXRowWin) {
+        return "X";
+      }
+
+      if (isORowWin) {
+        return "O";
+      }
+    }
+
+    for (let col = 0; col < 3; col++) {
+      let isXColumnWin = true;
+      let isOColumnWin = true;
+
+      for (let row = 0; row < 3; row++) {
+        if (playgroundWinner[row][col] !== "x") {
+          isXColumnWin = false;
+        }
+        if (playgroundWinner[row][col] !== "0") {
+          isOColumnWin = false;
+        }
+      }
+
+      if (isXColumnWin) {
+        return "X";
+      }
+
+      if (isOColumnWin) {
+        return "O";
+      }
+    }
+
+    let isOLeftDiagonalWin = true;
+    let isXLeftDiagonalWin = true;
+    let isORightDiagonalWin = true;
+    let isXRightDiagonalWin = true;
+
+    for (let i = 0; i < 3; i++) {
+      if (playgroundWinner[i][i] !== "0") {
+        isOLeftDiagonalWin = false;
+      }
+
+      if (playgroundWinner[i][i] !== "x") {
+        isXLeftDiagonalWin = false;
+      }
+
+      if (playgroundWinner[i][2 - i] !== "0") {
+        isORightDiagonalWin = false;
+      }
+
+      if (playgroundWinner[i][2 - i] !== "x") {
+        isXRightDiagonalWin = false;
+      }
+    }
+
+    if (isOLeftDiagonalWin || isORightDiagonalWin) {
+      return "O";
+    }
+
+    if (isXLeftDiagonalWin || isXRightDiagonalWin) {
+      return "X";
     }
   };
 
@@ -65,10 +145,36 @@ function PlaygroundScreen({ currentTurn, setCurrentTurn }) {
       });
     });
 
-    const chosenPosition =
-      possiblePositions[Math.floor(Math.random() * possiblePositions.length)];
+    let chosenPosition;
 
-    if (possiblePositions.length) {
+    possiblePositions.forEach((possiblePosition) => {
+      const playgroundCopy = copyPlayground(playground);
+      playgroundCopy[possiblePosition.row][possiblePosition.col] = "0";
+
+      const winner = getWinner(playgroundCopy);
+      if (winner === "0") {
+        chosenPosition = possiblePosition;
+      }
+    });
+
+    if (!chosenPosition) {
+      possiblePositions.forEach((possiblePosition) => {
+        const playgroundCopy = copyPlayground(playground);
+        playgroundCopy[possiblePosition.row][possiblePosition.col] = "x";
+
+        const winner = getWinner(playgroundCopy);
+        if (winner === "x") {
+          chosenPosition = possiblePosition;
+        }
+      });
+    }
+
+    if (!chosenPosition) {
+      chosenPosition =
+        possiblePositions[Math.floor(Math.random() * possiblePositions.length)];
+    }
+
+    if (chosenPosition) {
       handlePress(chosenPosition.row, chosenPosition.col);
     }
   };
