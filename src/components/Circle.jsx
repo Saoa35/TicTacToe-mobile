@@ -13,8 +13,5 @@ const styles = StyleSheet.create({
     borderWidth: 15,
     borderColor: COLORS.items,
     borderRadius: 999,
-    // alignItems: "center",
-    // justifyContent: "center",
-    // position: "absolute",
   },
 });

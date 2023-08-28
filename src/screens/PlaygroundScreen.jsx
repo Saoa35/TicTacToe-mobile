@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { Alert, Pressable, StyleSheet, View } from "react-native";
-import { Circle } from "../components/Circle";
-import { Cross } from "../components/Cross";
-import { COLORS } from "../constants/themes";
+import { Alert, StyleSheet, View } from "react-native";
+import { Cell } from "../components/Cell";
 
 const emptyField = [
   ["", "", ""],
@@ -128,13 +126,12 @@ function PlaygroundScreen({ currentTurn, setCurrentTurn }) {
       {playground.map((row, rowId) => (
         <View key={rowId} style={styles.row}>
           {row.map((cell, cellId) => (
-            <Pressable
-              onPress={() => handlePress(rowId, cellId)}
-              key={cellId}
-              style={styles.cell}
-            >
-              {cell === "0" ? <Circle /> : cell === "x" ? <Cross /> : ""}
-            </Pressable>
+            <Cell
+              cell={cell}
+              cellId={cellId}
+              handlePress={handlePress}
+              rowId={rowId}
+            />
           ))}
         </View>
       ))}
@@ -152,12 +149,5 @@ const styles = StyleSheet.create({
   row: {
     flex: 1,
     flexDirection: "row",
-  },
-  cell: {
-    flex: 1,
-    borderColor: COLORS.cells,
-    borderWidth: 5,
-    alignItems: "center",
-    justifyContent: "center",
   },
 });
