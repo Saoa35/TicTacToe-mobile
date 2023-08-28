@@ -13,15 +13,14 @@ export const Cross = () => {
 
 const styles = StyleSheet.create({
   crossContainer: {
-    width: 100,
-    height: 100,
+    width: "100%",
+    height: "100%",
     alignItems: "center",
     justifyContent: "center",
-    // position: "absolute",
   },
   crossLineOne: {
     width: 15,
-    height: 110,
+    height: "90%",
     backgroundColor: COLORS.items,
     borderRadius: 5,
     position: "absolute",
