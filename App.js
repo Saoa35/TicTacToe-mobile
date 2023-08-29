@@ -15,10 +15,10 @@ export default function App() {
         currentTurn={currentTurn}
         setCurrentTurn={setCurrentTurn}
         gameMode={gameMode}
-        setGameMode={setGameMode}
       />
       <View style={styles.buttons}>
         <Text
+          onPress={() => setGameMode("LOCAL")}
           style={[
             styles.button,
             {
@@ -30,6 +30,7 @@ export default function App() {
           Local
         </Text>
         <Text
+          onPress={() => setGameMode("BOT_EASY")}
           style={[
             styles.button,
             {
@@ -41,6 +42,7 @@ export default function App() {
           Easy Bot
         </Text>
         <Text
+          onPress={() => setGameMode("BOT_MEDIUM")}
           style={[
             styles.button,
             {

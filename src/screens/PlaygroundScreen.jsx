@@ -8,24 +8,19 @@ const emptyField = [
   ["", "", ""],
 ];
 
-function PlaygroundScreen({
-  currentTurn,
-  setCurrentTurn,
-  gameMode,
-  setGameMode,
-}) {
+const copyPlayground = (original) => {
+  const copy = JSON.parse(JSON.stringify(original));
+  return copy;
+};
+
+function PlaygroundScreen({ currentTurn, setCurrentTurn, gameMode }) {
   const [playground, setPlayground] = useState(emptyField);
 
-  const copyPlayground = (original) => {
-    const copy = JSON.parse(JSON.stringify(original));
-    return copy;
-  };
-
   useEffect(() => {
-    if (currentTurn === "0") {
+    if (currentTurn === "0" && gameMode !== "LOCAL") {
       bot();
     }
-  }, [currentTurn]);
+  }, [currentTurn, gameMode]);
 
   useEffect(() => {
     const winner = getWinner(playground);
@@ -45,10 +40,10 @@ function PlaygroundScreen({
 
     const updatedPlayground = [...playground];
 
-    if (updatedPlayground[rowId][cellId] === "") {
-      updatedPlayground[rowId][cellId] = currentTurn;
-      setPlayground(updatedPlayground);
-    }
+    // if (updatedPlayground[rowId][cellId] === "") {
+    updatedPlayground[rowId][cellId] = currentTurn;
+    setPlayground(updatedPlayground);
+    // }
 
     setCurrentTurn(currentTurn === "x" ? "0" : "x");
   };
@@ -156,26 +151,28 @@ function PlaygroundScreen({
 
     let chosenPosition;
 
-    possiblePositions.forEach((possiblePosition) => {
-      const playgroundCopy = copyPlayground(playground);
-      playgroundCopy[possiblePosition.row][possiblePosition.col] = "0";
-
-      const winner = getWinner(playgroundCopy);
-      if (winner === "0") {
-        chosenPosition = possiblePosition;
-      }
-    });
-
-    if (!chosenPosition) {
+    if (gameMode === "BOT_MEDIUM") {
       possiblePositions.forEach((possiblePosition) => {
         const playgroundCopy = copyPlayground(playground);
-        playgroundCopy[possiblePosition.row][possiblePosition.col] = "x";
+        playgroundCopy[possiblePosition.row][possiblePosition.col] = "0";
 
         const winner = getWinner(playgroundCopy);
-        if (winner === "x") {
+        if (winner === "0") {
           chosenPosition = possiblePosition;
         }
       });
+
+      if (!chosenPosition) {
+        possiblePositions.forEach((possiblePosition) => {
+          const playgroundCopy = copyPlayground(playground);
+          playgroundCopy[possiblePosition.row][possiblePosition.col] = "x";
+
+          const winner = getWinner(playgroundCopy);
+          if (winner === "x") {
+            chosenPosition = possiblePosition;
+          }
+        });
+      }
     }
 
     if (!chosenPosition) {
